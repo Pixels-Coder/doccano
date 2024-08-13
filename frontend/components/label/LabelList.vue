@@ -83,6 +83,7 @@ export default Vue.extend({
     headers() {
       const headers = [
         { text: this.$t('generic.name'), value: 'text', sortable: true },
+        { text: this.$t('labels.description'), value: 'description', sortable: false },
         { text: this.$t('labels.shortkey'), value: 'suffixKey', sortable: true },
         { text: this.$t('labels.color'), value: 'backgroundColor', sortable: true }
       ]
