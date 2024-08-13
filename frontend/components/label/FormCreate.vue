@@ -9,7 +9,7 @@
               :value="text"
               :counter="100"
               :label="$t('labels.labelName')"
-              :rules="[rules.required, rules.counter, rules.nameDuplicated]"
+              :rules="[rules.required, rules.nameCounter, rules.nameDuplicated]"
               outlined
               required
               @input="$emit('update:text', $event)"
@@ -24,6 +24,18 @@
               outlined
               @input="$emit('update:suffixKey', $event)"
             />
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12" sm="12">
+            <v-text-field
+              :value="description"
+              :counter="255"
+              :label="$t('labels.labelDescription')"
+              :rules="[rules.descriptionCounter]"
+              outlined
+              @input="$emit('update:description', $event)"
+              />
           </v-col>
         </v-row>
 
@@ -102,6 +114,11 @@ export default Vue.extend({
       type: String,
       required: true
     },
+    description: {
+      type: String as () => string | null,
+      required: false,
+      default: null,
+    },
     backgroundColor: {
       type: String,
       required: true
@@ -118,9 +135,12 @@ export default Vue.extend({
       valid: false,
       rules: {
         required: (v: string) => !!v || 'Required',
-        counter: (
-          v: string // @ts-ignore
+        nameCounter: (
+          v: string, // @ts-ignore
         ) => (v && v.length <= 100) || this.$t('rules.labelNameRules').labelLessThan100Chars,
+        descriptionCounter: (
+          v: string, // @ts-ignore
+        ) => (v && v.length <= 255) || this.$t('rules.labelDescriptionRules').lessThan255Chars,
         nameDuplicated: (
           v: string // @ts-ignore
         ) => !this.isUsedName(v) || this.$t('rules.labelNameRules').duplicated,

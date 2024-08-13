@@ -1,11 +1,13 @@
 export default {
   labels: 'Labels',
+  description: "Description",
   shortkey: 'Shortkey',
   color: 'Color',
   createLabel: 'Create Label',
   importLabels: 'Import Labels',
   exportLabels: 'Export Labels',
   labelName: 'Label name',
+  labelDescription: 'Label Description',
   labelMessage: 'Label name is required',
   createLink: 'Create Link',
   linkName: 'Link name',
