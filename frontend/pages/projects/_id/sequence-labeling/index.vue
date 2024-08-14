@@ -117,6 +117,7 @@ export default {
       annotations: [],
       docs: [],
       spanTypes: [],
+      spanTypesIds: new Set([]),
       relations: [],
       relationTypes: [],
       project: {},
@@ -202,23 +203,33 @@ export default {
   },
 
   async created() {
-    this.spanTypes = await this.$services.spanType.list(this.projectId)
-    this.relationTypes = await this.$services.relationType.list(this.projectId)
-    this.project = await this.$services.project.findById(this.projectId)
-    this.progress = await this.$repositories.metrics.fetchMyProgress(this.projectId)
+    const spanPromise = this.fetchSpanTypes();
+    const relationPromise = this.$services.relationType.list(this.projectId)
+    const projectPromise = this.$services.project.findById(this.projectId)
+    const progressPromise = this.$repositories.metrics.fetchMyProgress(this.projectId)
+    await spanPromise
+    this.relationTypes = await relationPromise
+    this.project = await projectPromise
+    this.progress = await progressPromise
   },
 
   methods: {
     async maybeFetchSpanTypes(annotations) {
-      const labelIds = new Set(this.spanTypes.map((label) => label.id))
-      if (annotations.some((item) => !labelIds.has(item.label))) {
-        this.spanTypes = await this.$services.spanType.list(this.projectId)
+      if (annotations.some((item) => !this.spanTypesIds.has(item.label))) {
+        await this.fetchSpanTypes()
       }
     },
 
+    async fetchSpanTypes() {
+      this.spanTypes = await this.$services.spanType.list(this.projectId)
+      this.spanTypesIds = new Set(this.spanTypes.map((label) => label.id))
+    },
+
     async list(docId) {
-      const annotations = await this.$services.sequenceLabeling.list(this.projectId, docId)
-      const relations = await this.$services.sequenceLabeling.listRelations(this.projectId, docId)
+      const annotationsPromise = this.$services.sequenceLabeling.list(this.projectId, docId)
+      const relationsPromise = this.$services.sequenceLabeling.listRelations(this.projectId, docId)
+      const annotations = await annotationsPromise
+      const relations = await relationsPromise
       // In colab mode, if someone add a new label and annotate data
       // with the label during your work, it occurs exception
       // because there is no corresponding label.
