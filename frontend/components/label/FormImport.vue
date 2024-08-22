@@ -17,7 +17,7 @@
           accept=".json"
           :error-messages="errorMessage"
           :label="$t('labels.filePlaceholder')"
-          :rules="uploadSingleFileRules($t('rules.uploadFileRules'))"
+          :rules="uploadSingleFileRules100M($t('rules.uploadFileRules'))"
           outlined
           prepend-icon=""
           @change="$emit('clear')"
@@ -38,7 +38,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { uploadSingleFileRules } from '@/rules/index'
+import { uploadSingleFileRules100M } from '@/rules/index'
 
 export default Vue.extend({
   props: {
@@ -52,7 +52,7 @@ export default Vue.extend({
     return {
       file: null,
       valid: false,
-      uploadSingleFileRules
+      uploadSingleFileRules100M
     }
   },
 

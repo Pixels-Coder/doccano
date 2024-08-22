@@ -31,8 +31,12 @@ export const uploadFileRules = (msg) => {
   ]
 }
 
-export const uploadSingleFileRules = (msg) => {
+export const uploadSingleFileRules1M = (msg) => {
   return [(v) => !!v || msg.fileRequired, (v) => !v || v.size < 1000000 || msg.fileLessThan1MB]
+}
+
+export const uploadSingleFileRules100M = (msg) => {
+  return [(v) => !!v || msg.fileRequired, (v) => !v || v.size < 100000000 || msg.fileLessThan100MB]
 }
 
 // Rules for user.
