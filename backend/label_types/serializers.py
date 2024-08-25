@@ -5,6 +5,8 @@ from .models import CategoryType, LabelType, RelationType, SpanType
 
 
 class LabelSerializer(serializers.ModelSerializer):
+    description = serializers.CharField(max_length=5000)
+
     def validate(self, attrs):
         prefix_key = attrs.get("prefix_key")
         suffix_key = attrs.get("suffix_key")

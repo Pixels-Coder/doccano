@@ -30,7 +30,7 @@
           <v-col cols="12" sm="12">
             <v-text-field
               :value="description"
-              :counter="255"
+              :counter="5000"
               :label="$t('labels.labelDescription')"
               :rules="[rules.descriptionCounter]"
               outlined
@@ -140,7 +140,7 @@ export default Vue.extend({
         ) => (v && v.length <= 100) || this.$t('rules.labelNameRules').labelLessThan100Chars,
         descriptionCounter: (
           v: string, // @ts-ignore
-        ) => (v && v.length <= 255) || this.$t('rules.labelDescriptionRules').lessThan255Chars,
+        ) => (v && v.length <= 5000) || this.$t('rules.labelDescriptionRules').lessThan5000Chars,
         nameDuplicated: (
           v: string // @ts-ignore
         ) => !this.isUsedName(v) || this.$t('rules.labelNameRules').duplicated,

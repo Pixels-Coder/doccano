@@ -11,9 +11,19 @@ export class LabelApplicationService {
     return items.map((item) => new LabelDTO(item))
   }
 
+  async listByIds(projectId: string, labelIds: number[]): Promise<LabelItem[]> {
+    const items = await this.repository.listByIds(projectId, labelIds)
+    return items.map((item) => new LabelDTO(item))
+  }
+
   public async findById(projectId: string, labelId: number): Promise<LabelDTO> {
     const item = await this.repository.findById(projectId, labelId)
     return new LabelDTO(item)
+  }
+
+  public async textSearch(projectId: string, search: string, limit?: number): Promise<LabelDTO[]> {
+    const items = await this.repository.textSearch(projectId, search, limit)
+    return items.map((item) => new LabelDTO(item))
   }
 
   public async create(projectId: string, item: CreateLabelCommand): Promise<LabelDTO> {

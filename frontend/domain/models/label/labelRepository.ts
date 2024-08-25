@@ -2,6 +2,10 @@ import { LabelItem } from '~/domain/models/label/label'
 
 export interface LabelRepository {
   list(projectId: string): Promise<LabelItem[]>
+  
+  listByIds(projectId: string, labelIds: number[]): Promise<LabelItem[]>
+
+  textSearch(projectId: string, search: string, limit?: number): Promise<LabelItem[]>
 
   findById(projectId: string, labelId: number): Promise<LabelItem>
 

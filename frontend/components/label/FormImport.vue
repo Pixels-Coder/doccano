@@ -61,12 +61,14 @@ export default Vue.extend({
       const data = [
         {
           text: 'Dog',
+          description: 'Dog description',
           suffix_key: 'a',
           background_color: '#FF0000',
           text_color: '#ffffff'
         },
         {
           text: 'Cat',
+          description: 'Cat description',
           suffix_key: 'c',
           background_color: '#FF0000',
           text_color: '#ffffff'

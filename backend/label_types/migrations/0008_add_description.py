@@ -13,16 +13,16 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='categorytype',
             name='description',
-            field=models.CharField(default='', max_length=255),
+            field=models.CharField(default='', max_length=5000),
         ),
         migrations.AddField(
             model_name='relationtype',
             name='description',
-            field=models.CharField(default='', max_length=255),
+            field=models.CharField(default='', max_length=5000),
         ),
         migrations.AddField(
             model_name='spantype',
             name='description',
-            field=models.CharField(default='', max_length=255),
+            field=models.CharField(default='', max_length=5000),
         ),
     ]

@@ -23,6 +23,7 @@
       :y="y"
       :selected-label="currentLabel"
       :labels="entityLabels"
+      :projectId="projectId"
       @close="cleanUp"
       @click:label="addOrUpdateEntity"
     />
@@ -32,6 +33,7 @@
       :y="y"
       :selected-label="currentRelationLabel"
       :labels="relationLabels"
+      :projectId="projectId"
       @close="cleanUp"
       @click:label="addOrUpdateRelation"
     />
@@ -62,6 +64,11 @@ export default Vue.extend({
       default: false
     },
     text: {
+      type: String,
+      default: '',
+      required: true
+    },
+    projectId: {
       type: String,
       default: '',
       required: true

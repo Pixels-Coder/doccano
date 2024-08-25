@@ -20,6 +20,7 @@
             :dark="$vuetify.theme.dark"
             :rtl="isRTL"
             :text="doc.text"
+            :projectId="projectId"
             :entities="annotations"
             :entity-labels="spanTypes"
             :relations="relations"
@@ -203,11 +204,11 @@ export default {
   },
 
   async created() {
-    const spanPromise = this.fetchSpanTypes();
+    // const spanPromise = this.fetchSpanTypes();
     const relationPromise = this.$services.relationType.list(this.projectId)
     const projectPromise = this.$services.project.findById(this.projectId)
     const progressPromise = this.$repositories.metrics.fetchMyProgress(this.projectId)
-    await spanPromise
+    // await spanPromise
     this.relationTypes = await relationPromise
     this.project = await projectPromise
     this.progress = await progressPromise
@@ -215,13 +216,16 @@ export default {
 
   methods: {
     async maybeFetchSpanTypes(annotations) {
+      console.log("annotations", annotations)
       if (annotations.some((item) => !this.spanTypesIds.has(item.label))) {
-        await this.fetchSpanTypes()
+        const spanTypeIds = annotations.map(ann => ann.label)
+        await this.fetchSpanTypes(spanTypeIds)
       }
     },
 
-    async fetchSpanTypes() {
-      this.spanTypes = await this.$services.spanType.list(this.projectId)
+    async fetchSpanTypes(spanTypeIds) {
+      console.log("fetchSpanTypes", spanTypeIds)
+      this.spanTypes = await this.$services.spanType.listByIds(this.projectId, spanTypeIds)
       this.spanTypesIds = new Set(this.spanTypes.map((label) => label.id))
     },
 

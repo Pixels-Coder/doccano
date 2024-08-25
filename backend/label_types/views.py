@@ -3,6 +3,8 @@ import re
 
 from django.db import IntegrityError, transaction
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
+from django.contrib.postgres.search import SearchVector, SearchQuery
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, status
 from rest_framework.exceptions import ParseError
@@ -51,7 +53,22 @@ class LabelList(generics.ListCreateAPIView):
         return super().get_permissions()
 
     def get_queryset(self):
-        return self.model.objects.filter(project=self.kwargs["project_id"])
+        query = self.model.objects.filter(project=self.kwargs["project_id"])
+        if "labelIds" in self.request.query_params:
+            label_ids = list(map(lambda id: int(id), self.request.query_params["labelIds"].split(",")))
+            query = query.filter(pk__in=label_ids)
+        if "search" in self.request.query_params:
+            search = self.request.query_params["search"]
+            query = query.annotate(
+                search=SearchVector("text", "description", config="french"),
+            ).filter(search=SearchQuery(search, config="french"))
+        return query
+    
+    def finalize_response(self, request, response, *args, **kwargs):
+        if "limit" in request.query_params:
+            limit = int(request.query_params["limit"])
+            response.data = response.data[:limit]
+        return super().finalize_response(request, response, *args, **kwargs)
 
     def perform_create(self, serializer):
         serializer.save(project_id=self.kwargs["project_id"])

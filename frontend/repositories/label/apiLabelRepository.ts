@@ -35,6 +35,18 @@ export class APILabelRepository implements LabelRepository {
     return response.data.map((item: { [key: string]: any }) => toModel(item))
   }
 
+  async listByIds(projectId: string, labelIds: number[]): Promise<LabelItem[]> {
+    const url = `/projects/${projectId}/${this.baseUrl}s`
+    const response = await this.request.get(url, {params: {labelIds: labelIds.map(t => t.toString()).join(",")}})
+    return response.data.map((item: { [key: string]: any }) => toModel(item))
+  }
+
+  async textSearch(projectId: string, search: string, limit?: number): Promise<LabelItem[]> {
+    const url = `/projects/${projectId}/${this.baseUrl}s`
+    const response = await this.request.get(url, {params: {search, limit}})
+    return response.data.map((item: { [key: string]: any }) => toModel(item))
+  }
+
   async findById(projectId: string, labelId: number): Promise<LabelItem> {
     const url = `/projects/${projectId}/${this.baseUrl}s/${labelId}`
     const response = await this.request.get(url)

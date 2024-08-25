@@ -11,7 +11,7 @@ services:
       - static_volume:/backend/staticfiles
       - media:/backend/media
       - tmp_file:/backend/filepond-temp-uploads
-      - ../backend:/backend
+      - ../backend:/doccano/backend
     environment:
       ADMIN_USERNAME: "${ADMIN_USERNAME}"
       ADMIN_PASSWORD: "${ADMIN_PASSWORD}"
@@ -49,6 +49,7 @@ services:
     volumes:
       - media:/backend/media
       - tmp_file:/backend/filepond-temp-uploads
+      - ../backend:/backend
     entrypoint: ["/opt/bin/prod-celery.sh"]
     environment:
       PYTHONUNBUFFERED: "1"

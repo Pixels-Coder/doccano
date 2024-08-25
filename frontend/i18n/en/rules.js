@@ -8,7 +8,7 @@ export default {
     duplicated: 'The label name is already used.'
   },
   labelDescriptionRules: {
-    lessThan255Chars: 'Label description must be less than 255 characters',
+    lessThan5000Chars: 'Label description must be less than 5000 characters',
   },
   keyNameRules: {
     duplicated: 'The key is already used.'
