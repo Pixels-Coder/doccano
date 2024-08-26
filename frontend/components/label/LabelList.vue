@@ -10,7 +10,8 @@
     :footer-props="{
       showFirstLastPage: true,
       'items-per-page-text': $t('vuetify.itemsPerPageText'),
-      'page-text': $t('dataset.pageText')
+      'page-text': $t('dataset.pageText'),
+      'items-per-page-options': [10, 25, 50, 100, 500],
     }"
     item-key="id"
     show-select
