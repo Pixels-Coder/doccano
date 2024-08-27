@@ -58,25 +58,33 @@
               </template>
             </v-switch>
             <v-chip-group v-model="selectedLabelIndex" column>
-              <v-chip
-                v-for="(item, index) in labelTypes"
-                :key="item.id"
-                v-shortkey="[item.suffixKey]"
-                :color="item.backgroundColor"
-                filter
-                :text-color="$contrastColor(item.backgroundColor)"
-                @shortkey="selectedLabelIndex = index"
-              >
-                {{ item.text }}
-                <v-avatar
-                  v-if="item.suffixKey"
-                  right
-                  color="white"
-                  class="black--text font-weight-bold"
-                >
-                  {{ item.suffixKey }}
-                </v-avatar>
-              </v-chip>
+              <v-tooltip v-for="(item, index) in labelTypes" :key="item.id" bottom>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-chip
+                    :key="item.id"
+                    v-bind="attrs"
+                    v-on="on"
+                    v-shortkey="[item.suffixKey]"
+                    :color="item.backgroundColor"
+                    filter
+                    :text-color="$contrastColor(item.backgroundColor)"
+                    @shortkey="selectedLabelIndex = index"
+                  >
+                    {{ item.text }} BLA
+                    <v-avatar
+                      v-if="item.suffixKey"
+                      right
+                      color="white"
+                      class="black--text font-weight-bold"
+                    >
+                      {{ item.suffixKey }}
+                    </v-avatar>
+                  </v-chip>
+                </template>
+                <pre class="pre-wrap"
+                v-text="item.description" />
+                 <!-- <span>This is a tooltip</span> -->
+              </v-tooltip>
             </v-chip-group>
           </v-card-text>
         </v-expand-transition>
