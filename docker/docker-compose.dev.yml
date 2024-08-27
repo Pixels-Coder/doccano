@@ -21,6 +21,7 @@ services:
       ALLOW_SIGNUP: "False"
       DEBUG: "True"
       DJANGO_SETTINGS_MODULE: "config.settings.development"
+      CSRF_TRUSTED_ORIGINS: "http://*"
     ports:
       - 8000:8000
     depends_on:
