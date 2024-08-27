@@ -2,21 +2,6 @@
   <v-menu :value="opened" :position-x="x" :position-y="y" absolute offset-y @input="close">
     <v-list dense min-width="150" max-height="400" class="overflow-y-auto">
       <v-list-item>
-        <!--<v-autocomplete
-          ref="autocomplete"
-          v-model="value"
-          :items="labels"
-          autofocus
-          dense
-          deletable-chips
-          hide-details
-          item-text="text"
-          item-value="id"
-          label="Select a label"
-          small-chips
-          :no-filter="false"
-          :search-input.sync="searchQuery"
-        />-->
         <v-text-field
           label="Select a Label"
           v-model="searchQuery"
@@ -35,7 +20,12 @@
           <span v-else class="mr-8" />
         </v-list-item-action>
         <v-list-item-content>
-          <v-list-item-title v-text="label.text" />
+          <v-chip
+            :color="label.backgroundColor"
+            :text-color="$contrastColor(label.backgroundColor)"
+            small
+            v-text="label.text"
+          />
           <span v-text="label.description" />
         </v-list-item-content>
       </v-list-item>
@@ -45,6 +35,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { LabelDTO } from '~/services/application/label/labelData';
 export default Vue.extend({
   props: {
     projectId: {
@@ -82,7 +73,7 @@ export default Vue.extend({
       entity: null as any,
       fromEntity: null as any,
       toEntity: null as any,
-      labels: []
+      labels: [] as LabelDTO[],
     }
   },
 
@@ -102,7 +93,11 @@ export default Vue.extend({
   },
   watch: {
     async searchQuery() {
-      await this.doSearch(this.searchQuery)
+      if (this.searchQuery.length > 0) {
+        await this.doSearch(this.searchQuery)
+      } else {
+        this.labels = []
+      }
     }
   },
   methods: {
@@ -113,14 +108,13 @@ export default Vue.extend({
         if (this.$refs.autocomplete) {
           ;(this.$refs.autocomplete as any).selectedItems = []
         }
+        this.searchQuery = ''
       })
       this.$emit('close')
     },
 
     async doSearch(search: string) {
-      console.log("do search", search)
       const result = await this.$services.spanType.textSearch(this.projectId, search, 10)
-      console.log(result);
       this.labels = result;
     },
 
