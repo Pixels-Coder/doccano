@@ -224,7 +224,6 @@ export default {
 
   methods: {
     async maybeFetchSpanTypes(annotations) {
-      console.log("annotations", annotations)
       if (annotations.some((item) => !this.spanTypesIds.has(item.label))) {
         const spanTypeIds = annotations.map(ann => ann.label)
         await this.fetchSpanTypes(spanTypeIds)
@@ -232,7 +231,6 @@ export default {
     },
 
     async fetchSpanTypes(spanTypeIds) {
-      console.log("fetchSpanTypes", spanTypeIds)
       this.spanTypes = await this.$services.spanType.listByIds(this.projectId, spanTypeIds)
       this.spanTypesIds = new Set(this.spanTypes.map((label) => label.id))
     },
